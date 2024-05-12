@@ -4,7 +4,7 @@ universe = container
 executable = run.sh
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT_OR_EVICT
-transfer_input_files = 3Dv1.zip
+transfer_input_files = 3Dv1.zip, model_inspection.py
 
 log = job.log
 error = job.err
