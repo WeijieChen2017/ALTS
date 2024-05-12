@@ -1,0 +1,41 @@
+{
+    "proj_dir": "UNet_d5f16c2",
+    "model_params": {
+        "model_name": "UNet_Theseus",
+        "spatial_dims" : 3,
+        "in_channels": 1,
+        "out_channels": 2,
+        "channels": "(16, 32, 64, 128, 256)",
+        "strides": "(2, 2, 2, 2)",
+        "kernel_size": 3,
+        "up_kernel_size": 3,
+        "num_res_units": 2,
+        "act": "PRELU",
+        "norm": "INSTANCE",
+        "dropout": 0.0,
+        "bias": "True",
+        "adn_ordering": "NDA",
+        "dimensions": 3,
+        "alter_block": 2
+    },
+    "train_params": {
+        "loss_function": "DiceCELoss",
+        "optimizer":{
+            "name": "Adam",
+            "lr": 0.0001,
+            "weight_decay": 0.0
+        },
+        "mixed_precision": "False",
+        "scheduler":{
+            "name": "CosineAnnealingLR",
+            "T_max": 100,
+            "eta_min": 1e-5
+        },
+        "data_folder": "data_dir/tsv2_small/",
+        "training_ratio": 0.5,
+        "validation_ratio": 0.3,
+        "testing_ratio": 0.2,
+        "n_epoch": 1000,
+        "batch_size": 1
+    }
+}
