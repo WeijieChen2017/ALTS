@@ -25,19 +25,21 @@ model_path = {
 model = torch.load(model_path["model"])
 # write all keys in model into model_structure.txt
 with open("model_structure.txt", "w") as f:
+    f.write("The model is saved in model_structure.txt")
     for key in model.keys():
         f.write(str(key)+"\n")
+        print(key)
 
-# load the model.pkl
-with open(model_path["model_pkl"], "rb") as f:
-    model_pkl = pickle.load(f)
-# write model_pkl into model_pkl.txt
-with open("model_pkl.txt", "w") as f:
-    f.write(str(model_pkl))
+# # load the model.pkl
+# with open(model_path["model_pkl"], "rb") as f:
+#     model_pkl = pickle.load(f)
+# # write model_pkl into model_pkl.txt
+# with open("model_pkl.txt", "w") as f:
+#     f.write(str(model_pkl))
 
-# load the plans
-with open(model_path["plans"], "rb") as f:
-    plans = pickle.load(f)
-# write plans into plans.txt
-with open("plans.txt", "w") as f:
-    f.write(str(plans))
+# # load the plans
+# with open(model_path["plans"], "rb") as f:
+#     plans = pickle.load(f)
+# # write plans into plans.txt
+# with open("plans.txt", "w") as f:
+#     f.write(str(plans))
