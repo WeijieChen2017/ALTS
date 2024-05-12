@@ -14,10 +14,11 @@ import os
 import sys
 import numpy as np
 
+folder_path = "V1/"
 model_path = {
-    "model": "model_final_checkpoint.model",
-    "model_pkl": "model_final_checkpoint.model.pkl",
-    "plans": "plans.pkl"
+    "model": folder_path+"model_final_checkpoint.model",
+    "model_pkl": folder_path+"model_final_checkpoint.model.pkl",
+    "plans": folder_path+"plans.pkl"
 }
 
 # load the model
