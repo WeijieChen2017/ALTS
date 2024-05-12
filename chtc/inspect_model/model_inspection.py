@@ -22,7 +22,7 @@ model_path = {
 }
 
 # load the model
-model = torch.load(model_path["model"])
+model = torch.load(model_path["model"], map_location=torch.device('cpu'))
 # write all keys in model into model_structure.txt
 with open("model_structure.txt", "w") as f:
     f.write("The model is saved in model_structure.txt")
