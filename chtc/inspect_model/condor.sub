@@ -10,8 +10,8 @@ log = job.log
 error = job.err
 output = job.out
 
-request_cpus = 1
-request_memory = 4GB
-request_disk = 2GB
+request_cpus = 10
+request_memory = 10GB
+request_disk = 20GB
 
 queue
