@@ -46,7 +46,7 @@ except KeyError:
 # Now proceed with your regular imports and script logic
 import matplotlib.pyplot as plt
 
-print_config()
+# print_config()
 
 data_dir = "data_dir/WORD"
 root_dir = "proj_dir/WORD_base"
