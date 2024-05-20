@@ -7,23 +7,39 @@ from utils import str_to_boolean
 
 # create a model
 from model import UNet_Theseus
-model = UNet_Theseus(
-    spatial_dims = config["model_params"]["spatial_dims"],
-    in_channels = config["model_params"]["in_channels"],
-    out_channels = config["model_params"]["out_channels"],
-    channels = str_to_tuple(config["model_params"]["channels"]),
-    strides = str_to_tuple(config["model_params"]["strides"]),
-    kernel_size = config["model_params"]["kernel_size"],
-    up_kernel_size = config["model_params"]["up_kernel_size"],
-    num_res_units = config["model_params"]["num_res_units"],
-    act = config["model_params"]["act"],
-    norm = config["model_params"]["norm"],
-    dropout = config["model_params"]["dropout"],
-    bias = str_to_boolean(config["model_params"]["bias"]),
-    adn_ordering = config["model_params"]["adn_ordering"],
-    dimensions = config["model_params"]["dimensions"],
-    alter_block = config["model_params"]["alter_block"],
+from monai.networks.nets import UNet
+model = UNet(
+    spatial_dims=config["model_params"]["spatial_dims"],
+    in_channels=config["model_params"]["in_channels"],
+    out_channels=config["model_params"]["out_channels"],
+    channels=str_to_tuple(config["model_params"]["channels"]),
+    strides=str_to_tuple(config["model_params"]["strides"]),
+    kernel_size=3,
+    up_kernel_size=3,
+    num_res_units=2,
+    act='PRELU',
+    norm='INSTANCE',
+    dropout=0.0,
+    bias=True,
+    adn_ordering='NDA'
 )
+# model = UNet_Theseus(
+#     spatial_dims = config["model_params"]["spatial_dims"],
+#     in_channels = config["model_params"]["in_channels"],
+#     out_channels = config["model_params"]["out_channels"],
+#     channels = str_to_tuple(config["model_params"]["channels"]),
+#     strides = str_to_tuple(config["model_params"]["strides"]),
+#     kernel_size = config["model_params"]["kernel_size"],
+#     up_kernel_size = config["model_params"]["up_kernel_size"],
+#     num_res_units = config["model_params"]["num_res_units"],
+#     act = config["model_params"]["act"],
+#     norm = config["model_params"]["norm"],
+#     dropout = config["model_params"]["dropout"],
+#     bias = str_to_boolean(config["model_params"]["bias"]),
+#     adn_ordering = config["model_params"]["adn_ordering"],
+#     dimensions = config["model_params"]["dimensions"],
+#     alter_block = config["model_params"]["alter_block"],
+# )
 
 # create a loss
 loss_name = config["train_params"]["loss"]
