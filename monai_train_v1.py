@@ -1,12 +1,7 @@
 import os
-import shutil
-import tempfile
-
 import matplotlib.pyplot as plt
-from tqdm import tqdm
 
 from monai.losses import DiceCELoss
-from monai.inferers import sliding_window_inference
 from monai.transforms import (
     AsDiscrete,
     EnsureChannelFirstd,
@@ -20,7 +15,7 @@ from monai.transforms import (
 
 from monai.config import print_config
 from monai.metrics import DiceMetric
-from monai.networks.nets import UNETR, UNet
+from monai.networks.nets import UNet
 
 from monai.data import (
     DataLoader,
@@ -28,8 +23,28 @@ from monai.data import (
     decollate_batch,
 )
 
-
 import torch
+
+import numpy as np
+import nibabel as nib
+from matplotlib.colors import ListedColormap
+
+import getpass
+import matplotlib
+
+# Setup environment for cache and user
+matplotlib.use('Agg')
+matplotlib.rcParams['cache.directory'] = '/tmp/matplotlib_cache'
+os.environ['TRANSFORMERS_CACHE'] = '/tmp/transformers_cache'
+
+# Safe user retrieval
+try:
+    username = getpass.getuser()
+except KeyError:
+    username = 'default_user'
+
+# Now proceed with your regular imports and script logic
+import matplotlib.pyplot as plt
 
 print_config()
 
@@ -151,6 +166,42 @@ loss_function = DiceCELoss(to_onehot_y=True, softmax=True)
 torch.backends.cudnn.benchmark = True
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4, weight_decay=1e-5)
 
+def plot_image(image, label, output, root_dir):
+
+    # colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', 
+    #           '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3']
+    colors = ['#000000',  # Black for background
+            '#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', 
+            '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', 
+            '#800000', '#aaffc3']
+    custom_cmap = ListedColormap(colors)
+
+    epoch = 300
+    mean_dice = 0.8
+    # plot the middle slice of the image
+    idx = image.shape[2] // 2
+
+    plt.figure(figsize=(18, 6), dpi=300)
+    plt.subplot(131)
+    plt.imshow(np.rot90(image[:, :, idx], 3), cmap="gray")
+    plt.axis("off")
+    plt.title("image")
+
+    plt.subplot(132)
+    plt.imshow(np.rot90(label[:, :, idx], 3), cmap=custom_cmap)
+    plt.axis("off")
+    plt.title("label")
+
+    plt.subplot(133)
+    plt.imshow(np.rot90(output[:, :, idx], 3), cmap=custom_cmap)
+    plt.axis("off")
+    plt.title("output")
+
+    plt.title(f"Epoch: {epoch}, Mean Dice: {mean_dice}")
+    save_path = os.path.join(root_dir, f"epoch_{epoch:.0f}_mean_dice_{mean_dice:.4f}.png")
+    plt.savefig(save_path)
+    plt.close()
+
 def validation(epoch, epoch_iterator_val):
     model.eval()
     with torch.no_grad():
@@ -163,6 +214,11 @@ def validation(epoch, epoch_iterator_val):
             val_output_convert = [post_pred(val_pred_tensor) for val_pred_tensor in val_outputs_list]
             dice_metric(y_pred=val_output_convert, y=val_labels_convert)
             epoch_iterator_val.set_description("Validate (%d / %d Steps)" % (global_step, 10.0))  # noqa: B038
+
+        image = batch["image"].detach().cpu()
+        label = batch["label"].detach().cpu()
+        output = val_outputs.detach().cpu()
+        plot_image(image, label, output, root_dir)
         mean_dice_val = dice_metric.aggregate().item()
         # print mean dice
         print("Epoch %d Validation Dice: %f" % (epoch, mean_dice_val))
@@ -211,8 +267,8 @@ def train(global_step, train_loader, dice_val_best, global_step_best):
     return global_step, dice_val_best, global_step_best
 
 
-max_iterations = 25000
-eval_num = 100
+max_iterations = 100
+eval_num = 10
 post_label = AsDiscrete(to_onehot=numClasses)
 post_pred = AsDiscrete(argmax=True, to_onehot=numClasses)
 dice_metric = DiceMetric(include_background=False, reduction="mean", get_not_nans=False)
