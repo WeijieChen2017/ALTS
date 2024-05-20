@@ -30,11 +30,11 @@ import nibabel as nib
 from matplotlib.colors import ListedColormap
 
 import getpass
-import matplotlib
 
-# Setup environment for cache and user
-matplotlib.use('Agg')
-matplotlib.rcParams['cache.directory'] = '/tmp/matplotlib_cache'
+# Set the environment variable for the Matplotlib configuration directory
+os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib_config'
+
+# Continue with your other configurations
 os.environ['TRANSFORMERS_CACHE'] = '/tmp/transformers_cache'
 
 # Safe user retrieval
