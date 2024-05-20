@@ -11,6 +11,7 @@ from monai.transforms import (
     Orientationd,
     ScaleIntensityRanged,
     Spacingd,
+    RandSpatialCropd,
 )
 
 from monai.config import print_config
@@ -75,6 +76,8 @@ train_transforms = Compose(
         ),
         # NormalizeIntensityd(subtrahend=mean_of_dataset, divisor=std_dev_of_dataset),  # mean and std_dev should be precomputed from your dataset
         CropForegroundd(keys=["image", "label"], source_key="image"),
+        # random crop to the target size of (160, 160, 80)
+        RandSpatialCropd(keys=["image", "label"], roi_size=(160, 160, 80), random_center=True, random_size=False),
     ]
 )
 val_transforms = Compose(
@@ -89,6 +92,7 @@ val_transforms = Compose(
         ),
         ScaleIntensityRanged(keys=["image"], a_min=-1024, a_max=2976, b_min=0.0, b_max=1.0, clip=True),
         CropForegroundd(keys=["image", "label"], source_key="image"),
+        RandSpatialCropd(keys=["image", "label"], roi_size=(160, 160, 80), random_center=True, random_size=False),
     ]
 )
 
@@ -138,15 +142,16 @@ print("Train:", numTraining, "Validation:", numValidation, "Classes:", numClasse
 train_ds = CacheDataset(
     data=training_files,
     transform=train_transforms,
-    cache_num=1,
+    cache_num=numTraining,
     cache_rate=1.0,
     num_workers=8,
 )
 val_ds = CacheDataset(
     data=validation_files, 
     transform=val_transforms, 
-    cache_num=1,
-     cache_rate=1.0, num_workers=4)
+    cache_num=numValidation,
+    cache_rate=1.0, 
+    num_workers=4)
 train_loader = DataLoader(train_ds, batch_size=1, shuffle=True, num_workers=8, pin_memory=True)
 
 val_loader = DataLoader(val_ds, batch_size=1, shuffle=False, num_workers=4, pin_memory=True)
