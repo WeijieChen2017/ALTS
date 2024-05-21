@@ -38,6 +38,8 @@ os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib_config'
 # Continue with your other configurations
 os.environ['TRANSFORMERS_CACHE'] = '/tmp/transformers_cache'
 
+os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
+
 # Safe user retrieval
 try:
     username = getpass.getuser()
@@ -152,8 +154,8 @@ val_ds = CacheDataset(
     cache_num=numValidation,
     cache_rate=0.1, 
     num_workers=2)
-train_loader = DataLoader(train_ds, batch_size=1, shuffle=True, num_workers=8, pin_memory=True)
 
+train_loader = DataLoader(train_ds, batch_size=1, shuffle=True, num_workers=8, pin_memory=True)
 val_loader = DataLoader(val_ds, batch_size=1, shuffle=False, num_workers=4, pin_memory=True)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -230,6 +232,20 @@ def validation(epoch, epoch_iterator_val):
         dice_metric.reset()
     return mean_dice_val
 
+# Function to get memory in GB
+def get_gpu_memory_map():
+    """Get the current gpu usage."""
+    assert torch.cuda.is_available(), "CUDA is not available. No GPU found!"
+    
+    # Collects GPU details
+    device_count = torch.cuda.device_count()
+    details = {}
+    for i in range(device_count):
+        torch.cuda.set_device(i)
+        allocated = torch.cuda.memory_allocated(i) / 1e9
+        reserved = torch.cuda.memory_reserved(i) / 1e9
+        details[f'GPU {i}'] = f'Allocated: {allocated:.2f} GB, Reserved: {reserved:.2f} GB'
+    return details
 
 def train(global_step, train_loader, dice_val_best, global_step_best):
     model.train()
@@ -239,7 +255,18 @@ def train(global_step, train_loader, dice_val_best, global_step_best):
     for step, batch in enumerate(train_loader):
         step += 1
         x, y = (batch["image"].to(device), batch["label"].to(device))
+        if torch.isnan(x).any() or torch.isinf(x).any():
+            raise ValueError("NaN or Inf found in input tensor")
+        if torch.isnan(y).any() or torch.isinf(y).any():
+            raise ValueError("NaN or Inf found in target tensor")
+        
+        print("Input shape:", x.shape, "Target shape:", y.shape)
+        print("Input dtype:", x.dtype, "Target dtype:", y.dtype)
         logit_map = model(x)
+        gpu_memory = get_gpu_memory_map()
+        for gpu, memory in gpu_memory.items():
+            print(f'GPU {gpu}: {memory}')
+        print("Output shape:", logit_map.shape, "Output dtype:", logit_map.dtype)
         loss = loss_function(logit_map, y)
         loss.backward()
         epoch_loss += loss.item()
