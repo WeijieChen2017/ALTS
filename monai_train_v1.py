@@ -143,14 +143,14 @@ train_ds = CacheDataset(
     data=training_files,
     transform=train_transforms,
     cache_num=numTraining,
-    cache_rate=0.25,
+    cache_rate=0.1,
     num_workers=6,
 )
 val_ds = CacheDataset(
     data=validation_files, 
     transform=val_transforms, 
     cache_num=numValidation,
-    cache_rate=0.5, 
+    cache_rate=0.1, 
     num_workers=2)
 train_loader = DataLoader(train_ds, batch_size=1, shuffle=True, num_workers=8, pin_memory=True)
 
