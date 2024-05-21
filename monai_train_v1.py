@@ -77,7 +77,7 @@ train_transforms = Compose(
             clip=True,
         ),
         # NormalizeIntensityd(subtrahend=mean_of_dataset, divisor=std_dev_of_dataset),  # mean and std_dev should be precomputed from your dataset
-        CropForegroundd(keys=["image", "label"], source_key="image"),
+        # CropForegroundd(keys=["image", "label"], source_key="image"),
         # random crop to the target size of (160, 160, 80)
         RandSpatialCropd(keys=["image", "label"], roi_size=(160, 160, 80), random_center=True, random_size=False),
     ]
@@ -93,7 +93,7 @@ val_transforms = Compose(
             mode=("bilinear", "nearest"),
         ),
         ScaleIntensityRanged(keys=["image"], a_min=-1024, a_max=2976, b_min=0.0, b_max=1.0, clip=True),
-        CropForegroundd(keys=["image", "label"], source_key="image"),
+        # CropForegroundd(keys=["image", "label"], source_key="image"),
         RandSpatialCropd(keys=["image", "label"], roi_size=(160, 160, 80), random_center=True, random_size=False),
     ]
 )
@@ -145,18 +145,18 @@ train_ds = CacheDataset(
     data=training_files,
     transform=train_transforms,
     cache_num=numTraining,
-    cache_rate=0.1,
+    cache_rate=0.16,
     num_workers=6,
 )
 val_ds = CacheDataset(
     data=validation_files, 
     transform=val_transforms, 
     cache_num=numValidation,
-    cache_rate=0.1, 
+    cache_rate=0.2, 
     num_workers=2)
 
-train_loader = DataLoader(train_ds, batch_size=1, shuffle=True, num_workers=8, pin_memory=True)
-val_loader = DataLoader(val_ds, batch_size=1, shuffle=False, num_workers=4, pin_memory=True)
+train_loader = DataLoader(train_ds, batch_size=16, shuffle=True, num_workers=8, pin_memory=True)
+val_loader = DataLoader(val_ds, batch_size=4, shuffle=False, num_workers=4, pin_memory=True)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -253,6 +253,7 @@ def train(global_step, train_loader, dice_val_best, global_step_best):
     step = 0
     # epoch_iterator = tqdm(train_loader, desc="Training (X / X Steps) (loss=X.X)", dynamic_ncols=True)
     for step, batch in enumerate(train_loader):
+        print("Step:", step, "Global Step:", global_step, "Max Iterations:", max_iterations)
         step += 1
         x, y = (batch["image"].to(device), batch["label"].to(device))
         if torch.isnan(x).any() or torch.isinf(x).any():
