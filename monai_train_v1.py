@@ -1,4 +1,13 @@
 import os
+
+# Set the environment variable for the Matplotlib configuration directory
+os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib_config'
+
+# Continue with your other configurations
+os.environ['TRANSFORMERS_CACHE'] = '/tmp/transformers_cache'
+
+os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
+
 import matplotlib.pyplot as plt
 
 from monai.losses import DiceCELoss
@@ -32,19 +41,7 @@ from matplotlib.colors import ListedColormap
 
 import getpass
 
-# Set the environment variable for the Matplotlib configuration directory
-os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib_config'
 
-# Continue with your other configurations
-os.environ['TRANSFORMERS_CACHE'] = '/tmp/transformers_cache'
-
-os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
-
-# Safe user retrieval
-try:
-    username = getpass.getuser()
-except KeyError:
-    username = 'default_user'
 
 # Now proceed with your regular imports and script logic
 import matplotlib.pyplot as plt
