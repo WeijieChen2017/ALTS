@@ -200,6 +200,9 @@ def plot_image(image, label, output, root_dir):
 
     plt.subplot(133)
     img_to_plot = np.squeeze(np.rot90(output[:, :, :, :, idx], 3))
+    # img_to_plot is [17, 160, 160] as one-hot
+    # convert to [160, 160] as label from 0 to 16
+    img_to_plot = np.argmax(img_to_plot, axis=0)
     plt.imshow(img_to_plot, cmap=custom_cmap)
     plt.axis("off")
     plt.title("output")
