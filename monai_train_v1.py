@@ -170,7 +170,7 @@ loss_function = DiceCELoss(to_onehot_y=True, softmax=True)
 torch.backends.cudnn.benchmark = True
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4, weight_decay=1e-5)
 
-def plot_image(image, label, output, root_dir):
+def plot_image(image, label, output, root_dir, epoch, mean_dice):
 
     # colors = ['#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', 
     #           '#bcf60c', '#fabebe', '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000', '#aaffc3']
@@ -180,8 +180,6 @@ def plot_image(image, label, output, root_dir):
             '#800000', '#aaffc3']
     custom_cmap = ListedColormap(colors)
 
-    epoch = 300
-    mean_dice = 0.8
     # plot the middle slice of the image
     idx = image.shape[4] // 2
 
@@ -228,8 +226,8 @@ def validation(epoch, epoch_iterator_val):
         image = batch["image"].detach().cpu()
         label = batch["label"].detach().cpu()
         output = val_outputs.detach().cpu()
-        plot_image(image, label, output, root_dir)
         mean_dice_val = dice_metric.aggregate().item()
+        plot_image(image, label, output, root_dir, epoch, mean_dice_val)
         # print mean dice
         print("Epoch %d Validation Dice: %f" % (epoch, mean_dice_val))
         dice_metric.reset()
@@ -303,8 +301,8 @@ def train(global_step, train_loader, dice_val_best, global_step_best):
     return global_step, dice_val_best, global_step_best
 
 
-max_iterations = 100
-eval_num = 10
+max_iterations = 1000
+eval_num = 50
 post_label = AsDiscrete(to_onehot=numClasses)
 post_pred = AsDiscrete(argmax=True, to_onehot=numClasses)
 dice_metric = DiceMetric(include_background=False, reduction="mean", get_not_nans=False)

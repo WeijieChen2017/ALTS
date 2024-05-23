@@ -7,5 +7,5 @@ cd ALTS
 python monai_train_v1.py
 rm -rf ./data_dir/WORD
 cd ../
-tar -czvf ALTS.tar.gz ALTS
+tar -czvf proj.tar.gz ALTS/proj_dir/WORD_base
 rm -rf ALTS
