@@ -1,4 +1,5 @@
 pip install wandb
+wandb login
 41c33ee621453a8afcc7b208674132e0e8bfafdb
 unzip ALTS.zip
 unzip WORD.zip

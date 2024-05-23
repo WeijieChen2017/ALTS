@@ -320,6 +320,7 @@ def train(global_step, train_loader, dice_val_best, global_step_best):
 
     return global_step, dice_val_best, global_step_best
 
+print("Wandb path:", wandb.__path__)
 # start a new wandb run to track this script
 wandb.init(
     # set the wandb project where this run will be logged
