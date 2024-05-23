@@ -1,6 +1,8 @@
 import os
 import wandb
 
+wandb.login(key = "41c33ee621453a8afcc7b208674132e0e8bfafdb")
+
 # Set the environment variable for the Matplotlib configuration directory
 os.environ['MPLCONFIGDIR'] = '/tmp/matplotlib_config'
 
@@ -364,3 +366,4 @@ while global_step < max_iterations:
     global_step, dice_val_best, global_step_best = train(global_step, train_loader, dice_val_best, global_step_best)
 # model.load_state_dict(torch.load(os.path.join(root_dir, "best_metric_model.pth")))
 
+wandb.finish()
