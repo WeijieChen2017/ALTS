@@ -217,7 +217,7 @@ def validation(epoch, epoch_iterator_val):
             val_outputs_list = decollate_batch(val_outputs)
             val_output_convert = [post_pred(val_pred_tensor) for val_pred_tensor in val_outputs_list]
             dice_metric(y_pred=val_output_convert, y=val_labels_convert)
-            epoch_iterator_val.set_description("Validate (%d / %d Steps)" % (global_step, 10.0))  # noqa: B038
+            # epoch_iterator_val.set_description("Validate (%d / %d Steps)" % (global_step, 10.0))  # noqa: B038
 
         image = batch["image"].detach().cpu()
         label = batch["label"].detach().cpu()
