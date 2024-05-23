@@ -301,7 +301,7 @@ def train(global_step, train_loader, dice_val_best, global_step_best):
     return global_step, dice_val_best, global_step_best
 
 
-max_iterations = 1000
+max_iterations = 3000
 eval_num = 50
 post_label = AsDiscrete(to_onehot=numClasses)
 post_pred = AsDiscrete(argmax=True, to_onehot=numClasses)
