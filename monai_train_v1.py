@@ -187,17 +187,20 @@ def plot_image(image, label, output, root_dir):
 
     plt.figure(figsize=(18, 6), dpi=300)
     plt.subplot(131)
-    plt.imshow(np.rot90(image[:, :, idx], 3), cmap="gray")
+    img_to_plot = np.squeeze(np.rot90(image[:, :, :, :, idx], 3))
+    plt.imshow(img_to_plot, cmap="gray")
     plt.axis("off")
     plt.title("image")
 
     plt.subplot(132)
-    plt.imshow(np.rot90(label[:, :, idx], 3), cmap=custom_cmap)
+    img_to_plot = np.squeeze(np.rot90(label[:, :, :, :, idx], 3))
+    plt.imshow(img_to_plot, cmap=custom_cmap)
     plt.axis("off")
     plt.title("label")
 
     plt.subplot(133)
-    plt.imshow(np.rot90(output[:, :, idx], 3), cmap=custom_cmap)
+    img_to_plot = np.squeeze(np.rot90(output[:, :, :, :, idx], 3))
+    plt.imshow(img_to_plot, cmap=custom_cmap)
     plt.axis("off")
     plt.title("output")
 
