@@ -74,7 +74,7 @@ train_transforms = Compose(
             clip=True,
         ),
         # NormalizeIntensityd(subtrahend=mean_of_dataset, divisor=std_dev_of_dataset),  # mean and std_dev should be precomputed from your dataset
-        # CropForegroundd(keys=["image", "label"], source_key="image"),
+        CropForegroundd(keys=["image", "label"], source_key="image"),
         # random crop to the target size of (160, 160, 80)
         RandSpatialCropd(keys=["image", "label"], roi_size=(160, 160, 80), random_center=True, random_size=False),
     ]
@@ -90,7 +90,7 @@ val_transforms = Compose(
             mode=("bilinear", "nearest"),
         ),
         ScaleIntensityRanged(keys=["image"], a_min=-1024, a_max=2976, b_min=0.0, b_max=1.0, clip=True),
-        # CropForegroundd(keys=["image", "label"], source_key="image"),
+        CropForegroundd(keys=["image", "label"], source_key="image"),
         RandSpatialCropd(keys=["image", "label"], roi_size=(160, 160, 80), random_center=True, random_size=False),
     ]
 )
@@ -258,13 +258,13 @@ def train(global_step, train_loader, dice_val_best, global_step_best):
         if torch.isnan(y).any() or torch.isinf(y).any():
             raise ValueError("NaN or Inf found in target tensor")
         
-        print("Input shape:", x.shape, "Target shape:", y.shape)
-        print("Input dtype:", x.dtype, "Target dtype:", y.dtype)
+        # print("Input shape:", x.shape, "Target shape:", y.shape)
+        # print("Input dtype:", x.dtype, "Target dtype:", y.dtype)
         logit_map = model(x)
         gpu_memory = get_gpu_memory_map()
         for gpu, memory in gpu_memory.items():
             print(f'GPU {gpu}: {memory}')
-        print("Output shape:", logit_map.shape, "Output dtype:", logit_map.dtype)
+        # print("Output shape:", logit_map.shape, "Output dtype:", logit_map.dtype)
         loss = loss_function(logit_map, y)
         loss.backward()
         epoch_loss += loss.item()
@@ -276,7 +276,7 @@ def train(global_step, train_loader, dice_val_best, global_step_best):
         print("Training (%d / %d Steps) (loss=%2.5f)" % (global_step, max_iterations, loss))
         if (global_step % eval_num == 0 and global_step != 0) or global_step == max_iterations:
             # epoch_iterator_val = tqdm(val_loader, desc="Validate (X / X Steps) (dice=X.X)", dynamic_ncols=True)
-            dice_val = validation(val_loader)
+            dice_val = validation(global_step, val_loader)
             epoch_loss /= step
             epoch_loss_values.append(epoch_loss)
             metric_values.append(dice_val)
