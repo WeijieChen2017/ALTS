@@ -183,7 +183,7 @@ def plot_image(image, label, output, root_dir):
     epoch = 300
     mean_dice = 0.8
     # plot the middle slice of the image
-    idx = image.shape[2] // 2
+    idx = image.shape[4] // 2
 
     plt.figure(figsize=(18, 6), dpi=300)
     plt.subplot(131)
