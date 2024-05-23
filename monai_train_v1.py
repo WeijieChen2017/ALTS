@@ -128,7 +128,7 @@ print(validation_files)
 numTraining = len(training_files)
 numValidation = len(validation_files)
 
-numClasses = len(data_json["labels"].keys())-1
+numClasses = len(data_json["labels"].keys())
 print("Train:", numTraining, "Validation:", numValidation, "Classes:", numClasses)
 
 
