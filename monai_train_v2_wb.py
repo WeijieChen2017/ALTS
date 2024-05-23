@@ -349,7 +349,7 @@ wandb.init(
 )
 
 
-max_iterations = 1000
+max_iterations = 3000
 eval_num = 50
 post_label = AsDiscrete(to_onehot=numClasses)
 post_pred = AsDiscrete(argmax=True, to_onehot=numClasses)
