@@ -1,0 +1,45 @@
+{
+    "os": "macOS-10.16-x86_64-i386-64bit",
+    "python": "3.9.19",
+    "heartbeatAt": "2024-05-23T13:04:28.380196",
+    "startedAt": "2024-05-23T13:04:25.628810",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/Users/wchen376/Downloads/GitHub/ALTS/wb_test.py",
+    "codePathLocal": "wb_test.py",
+    "codePath": "wb_test.py",
+    "git": {
+        "remote": "https://github.com/WeijieChen2017/ALTS.git",
+        "commit": "d266db41d9816d6fd078fe5741afc52f0ea958ec"
+    },
+    "email": null,
+    "root": "/Users/wchen376/Downloads/GitHub/ALTS",
+    "host": "WEIJIEs-MacBook-Pro.local",
+    "username": "wchen376",
+    "executable": "/opt/anaconda3/envs/mimrtl/bin/python",
+    "cpu_count": 4,
+    "cpu_count_logical": 8,
+    "cpu_freq": {
+        "current": 1400,
+        "min": 1400,
+        "max": 1400
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 1400,
+            "min": 1400,
+            "max": 1400
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 112.70698928833008,
+            "used": 93.19396209716797
+        }
+    },
+    "memory": {
+        "total": 8.0
+    }
+}
