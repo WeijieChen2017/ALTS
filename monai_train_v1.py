@@ -161,8 +161,8 @@ model = UNet(
     spatial_dims=3,
     in_channels=1,
     out_channels=numClasses,
-    channels=(16, 32, 64, 128, 256),
-    strides=(2, 2, 2, 2),
+    channels=(32, 64, 128, 256),
+    strides=(2, 2, 2),
     num_res_units=2,
 ).to(device)
 
@@ -327,8 +327,8 @@ hyper_params = {
     "epochs": 8000,
     "batch_size": 4,
     "loss": "DiceCELoss",
-    "model_depth": 5,
-    "model_start_channels": 16,
+    "model_depth": 4,
+    "model_start_channels": 32,
     "model_num_res_units": 2,
     "model_norm": "InstanceNorm",
     "model_act": "PReLU",
