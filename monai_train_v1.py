@@ -311,7 +311,10 @@ dice_val_best = 0.0
 global_step_best = 0
 epoch_loss_values = []
 metric_values = []
-while global_step < max_iterations:
+while global_step < max_iterations+1:
     global_step, dice_val_best, global_step_best = train(global_step, train_loader, dice_val_best, global_step_best)
+# save epoch_loss_values and metric_values into npy
+np.save(os.path.join(root_dir, "epoch_loss_values.npy"), epoch_loss_values)
+np.save(os.path.join(root_dir, "metric_values.npy"), metric_values)
 # model.load_state_dict(torch.load(os.path.join(root_dir, "best_metric_model.pth")))
 

@@ -322,6 +322,10 @@ def train(global_step, train_loader, dice_val_best, global_step_best):
 
     return global_step, dice_val_best, global_step_best
 
+# set random seed as 729
+torch.manual_seed(729)
+np.random.seed(729)
+
 print("Wandb path:", wandb.__path__)
 # start a new wandb run to track this script
 wandb.init(
@@ -333,7 +337,7 @@ wandb.init(
         "learning_rate": 1e-4,
         "architecture": "U-Net",
         "dataset": "WORD",
-        "epochs": 1000,
+        "epochs": 6000,
         "batch_size": 4,
         "loss": "DiceCELoss",
         "model_depth": 5,
@@ -348,11 +352,12 @@ wandb.init(
         "weight_decay": 1e-5,
         "CT_clip_range": (-1024, 2976),
         "CT_scale_range": (0.0, 1.0),
+        "random_seed": 729,
     }
 )
 
 
-max_iterations = 3000
+max_iterations = 6000
 eval_num = 50
 post_label = AsDiscrete(to_onehot=numClasses)
 post_pred = AsDiscrete(argmax=True, to_onehot=numClasses)
@@ -365,5 +370,6 @@ metric_values = []
 while global_step < max_iterations:
     global_step, dice_val_best, global_step_best = train(global_step, train_loader, dice_val_best, global_step_best)
 # model.load_state_dict(torch.load(os.path.join(root_dir, "best_metric_model.pth")))
-
+np.save(os.path.join(root_dir, "epoch_loss_values.npy"), epoch_loss_values)
+np.save(os.path.join(root_dir, "metric_values.npy"), metric_values)
 wandb.finish()
