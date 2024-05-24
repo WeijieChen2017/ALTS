@@ -300,9 +300,12 @@ def train(global_step, train_loader, dice_val_best, global_step_best):
         global_step += 1
     return global_step, dice_val_best, global_step_best
 
+# set the random seed 729
+torch.manual_seed(729)
+np.random.seed(729)
 
-max_iterations = 3000
-eval_num = 50
+max_iterations = 8000
+eval_num = 100
 post_label = AsDiscrete(to_onehot=numClasses)
 post_pred = AsDiscrete(argmax=True, to_onehot=numClasses)
 dice_metric = DiceMetric(include_background=False, reduction="mean", get_not_nans=False)
@@ -316,5 +319,29 @@ while global_step < max_iterations+1:
 # save epoch_loss_values and metric_values into npy
 np.save(os.path.join(root_dir, "epoch_loss_values.npy"), epoch_loss_values)
 np.save(os.path.join(root_dir, "metric_values.npy"), metric_values)
+# I want to record some hyperparameters to the log file
+hyper_params = {
+    "learning_rate": 1e-4,
+    "architecture": "U-Net",
+    "dataset": "WORD",
+    "epochs": 8000,
+    "batch_size": 4,
+    "loss": "DiceCELoss",
+    "model_depth": 5,
+    "model_start_channels": 16,
+    "model_num_res_units": 2,
+    "model_norm": "InstanceNorm",
+    "model_act": "PReLU",
+    "model_ordering": "NDA",
+    "pixdim": (1.5, 1.5, 1.5),
+    "roi_size": (160, 160, 80),
+    "optimizer": "AdamW",
+    "weight_decay": 1e-5,
+    "CT_clip_range": (-1024, 2976),
+    "CT_scale_range": (0.0, 1.0),
+    "random_seed": 729,
+}
+with open(os.path.join(root_dir, "hyper_params.json"), "w") as f:
+    json.dump(hyper_params, f)
 # model.load_state_dict(torch.load(os.path.join(root_dir, "best_metric_model.pth")))
 
