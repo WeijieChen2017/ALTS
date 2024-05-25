@@ -337,7 +337,7 @@ wandb.init(
         "learning_rate": 1e-4,
         "architecture": "U-Net",
         "dataset": "WORD",
-        "epochs": 6000,
+        "epochs": 4000,
         "batch_size": 4,
         "loss": "DiceCELoss",
         "model_depth": 5,
@@ -357,7 +357,7 @@ wandb.init(
 )
 
 
-max_iterations = 6000
+max_iterations = 4000
 eval_num = 50
 post_label = AsDiscrete(to_onehot=numClasses)
 post_pred = AsDiscrete(argmax=True, to_onehot=numClasses)
