@@ -1,2 +1,2 @@
 FROM projectmonai/monai
-RUN pip install --user wandb
+RUN pip install wandb
