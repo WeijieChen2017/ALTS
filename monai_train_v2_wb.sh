@@ -1,3 +1,7 @@
+docker build -t convez376/monai_with_wb:latest .
+docker run --gpus all -ti -v ./:/wchen376 --ipc=host convez376/monai_with_wb:latest
+pip list
+cd /wchen376
 unzip ALTS.zip
 unzip WORD.zip
 rm WORD.zip
