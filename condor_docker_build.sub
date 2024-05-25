@@ -13,8 +13,6 @@ should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
 transfer_executable = True
 
-chmod +x condor_docker_run.sh
-
 executable = condor_docker_run.sh
 
 +IsBuildJob = true
