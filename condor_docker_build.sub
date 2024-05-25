@@ -12,12 +12,9 @@ executable = /usr/bin/hostname
 transfer_input_files = condor_docker_run.sub, Dockerfile
 
 +IsBuildJob = true
-+WantGPULab = true
-+GPUJobLength = "short"
-request_gpus = 1
-require_gpus = GlobalMemoryMb >= 11000
-request_cpus = 16
-request_memory = 40GB
-request_disk = 30GB
+# requirements = (OpSysMajorVer =?= 8)
+request_cpus = 1
+request_memory = 4GB
+request_disk = 2GB
 
 queue
