@@ -9,7 +9,7 @@ log = interactive.log
 executable = /usr/bin/hostname
 
 # change the name of the file to be the name of your source code
-transfer_input_files = condor_docker_run.sh, Dockerfile
+transfer_input_files = condor_docker_run.sh, Dockerfile, ALTS.zip
 
 +IsBuildJob = true
 # requirements = (OpSysMajorVer =?= 8)
