@@ -304,7 +304,7 @@ def train(global_step, train_loader, dice_val_best, global_step_best):
 torch.manual_seed(729)
 np.random.seed(729)
 
-max_iterations = 8000
+max_iterations = 6000
 eval_num = 100
 post_label = AsDiscrete(to_onehot=numClasses)
 post_pred = AsDiscrete(argmax=True, to_onehot=numClasses)
@@ -324,7 +324,7 @@ hyper_params = {
     "learning_rate": 1e-4,
     "architecture": "U-Net",
     "dataset": "WORD",
-    "epochs": 8000,
+    "epochs": 6000,
     "batch_size": 4,
     "loss": "DiceCELoss",
     "model_depth": 4,
