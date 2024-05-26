@@ -7,15 +7,9 @@ mv WORD ./ALTS/data_dir/
 cd ALTS
 
 # Run the Python script with the arguments passed to this shell script
-python monai_train_v2_wb.py $@
+python monai_train_v2_wb.py --model_depth $1 --model_start_channels $2 --model_num_res_units $3 --model_norm $4
 
-# Use parameters to construct a unique filename for the output tar file
-depth=$(echo $@ | grep -oP '(?<=--model_depth )\d+')
-channels=$(echo $@ | grep -oP '(?<=--model_start_channels )\d+')
-units=$(echo $@ | grep -oP '(?<=--model_num_res_units )\d+')
-norm=$(echo $@ | grep -oP '(?<=--model_norm )[a-zA-Z]+')
-
-tar_filename="proj_wb_depth${depth}_ch${channels}_units${units}_norm${norm}.tar.gz"
+tar_filename="proj_"$1"_"$2"_"$3"_"$4".tar.gz"
 
 # Tar the project directory and name it uniquely
 tar -czvf $tar_filename ALTS/proj_dir/WORD_base

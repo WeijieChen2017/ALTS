@@ -1,24 +1,24 @@
---model_depth 3 --model_start_channels 24 --model_num_res_units 2 --model_norm InstanceNorm
---model_depth 3 --model_start_channels 24 --model_num_res_units 3 --model_norm InstanceNorm
---model_depth 3 --model_start_channels 24 --model_num_res_units 4 --model_norm InstanceNorm
---model_depth 3 --model_start_channels 24 --model_num_res_units 2 --model_norm BatchNorm
---model_depth 3 --model_start_channels 24 --model_num_res_units 3 --model_norm BatchNorm
---model_depth 3 --model_start_channels 24 --model_num_res_units 4 --model_norm BatchNorm
---model_depth 4 --model_start_channels 16 --model_num_res_units 2 --model_norm InstanceNorm
---model_depth 4 --model_start_channels 16 --model_num_res_units 3 --model_norm InstanceNorm
---model_depth 4 --model_start_channels 16 --model_num_res_units 4 --model_norm InstanceNorm
---model_depth 4 --model_start_channels 16 --model_num_res_units 2 --model_norm BatchNorm
---model_depth 4 --model_start_channels 16 --model_num_res_units 3 --model_norm BatchNorm
---model_depth 4 --model_start_channels 16 --model_num_res_units 4 --model_norm BatchNorm
---model_depth 4 --model_start_channels 24 --model_num_res_units 2 --model_norm InstanceNorm
---model_depth 4 --model_start_channels 24 --model_num_res_units 3 --model_norm InstanceNorm
---model_depth 4 --model_start_channels 24 --model_num_res_units 4 --model_norm InstanceNorm
---model_depth 4 --model_start_channels 24 --model_num_res_units 2 --model_norm BatchNorm
---model_depth 4 --model_start_channels 24 --model_num_res_units 3 --model_norm BatchNorm
---model_depth 4 --model_start_channels 24 --model_num_res_units 4 --model_norm BatchNorm
---model_depth 5 --model_start_channels 16 --model_num_res_units 2 --model_norm InstanceNorm
---model_depth 5 --model_start_channels 16 --model_num_res_units 3 --model_norm InstanceNorm
---model_depth 5 --model_start_channels 16 --model_num_res_units 4 --model_norm InstanceNorm
---model_depth 5 --model_start_channels 16 --model_num_res_units 2 --model_norm BatchNorm
---model_depth 5 --model_start_channels 16 --model_num_res_units 3 --model_norm BatchNorm
---model_depth 5 --model_start_channels 16 --model_num_res_units 4 --model_norm BatchNorm
+3 24 2 InstanceNorm
+3 24 3 InstanceNorm
+3 24 4 InstanceNorm
+3 24 2 BatchNorm
+3 24 3 BatchNorm
+3 24 4 BatchNorm
+4 16 2 InstanceNorm
+4 16 3 InstanceNorm
+4 16 4 InstanceNorm
+4 16 2 BatchNorm
+4 16 3 BatchNorm
+4 16 4 BatchNorm
+4 24 2 InstanceNorm
+4 24 3 InstanceNorm
+4 24 4 InstanceNorm
+4 24 2 BatchNorm
+4 24 3 BatchNorm
+4 24 4 BatchNorm
+5 16 2 InstanceNorm
+5 16 3 InstanceNorm
+5 16 4 InstanceNorm
+5 16 2 BatchNorm
+5 16 3 BatchNorm
+5 16 4 BatchNorm
