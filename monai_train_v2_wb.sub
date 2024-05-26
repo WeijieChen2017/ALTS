@@ -6,17 +6,18 @@ error = job_$(Cluster)_$(Process).err
 output = job_$(Cluster)_$(Process).out
 
 executable = monai_train_v2_wb.sh
+arguments = $(arg)
 
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT_OR_EVICT
-transfer_input_files = ALTS.zip, WORD.zip, monai_train_v2_wb.sh
+transfer_input_files = ALTS.zip, WORD.zip, monai_train_v2_wb.sh, args.txt
 
 +WantGPULab = true
-+GPUJobLength = "short"
++GPUJobLength = "medium"
 request_gpus = 1
 require_gpus = GlobalMemoryMb >= 11000
 request_cpus = 16
-request_memory = 80GB
+request_memory = 50GB
 request_disk = 30GB
 
-queue
+queue arg from monai_train_v2_wb_args.txt

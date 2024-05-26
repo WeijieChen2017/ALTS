@@ -44,15 +44,26 @@ from matplotlib.colors import ListedColormap
 
 import getpass
 
-
-
 # Now proceed with your regular imports and script logic
 import matplotlib.pyplot as plt
 
 # print_config()
+import argparse
+
+# CLI argument setup
+parser = argparse.ArgumentParser(description="Run UNet model training with configurable parameters.")
+parser.add_argument("--learning_rate", type=float, default=1e-4, help="Learning rate for the optimizer")
+parser.add_argument("--model_depth", type=int, default=5, help="Depth of the UNet model")
+parser.add_argument("--model_start_channels", type=int, default=16, help="Initial number of channels in the UNet model")
+parser.add_argument("--model_num_res_units", type=int, default=2, help="Number of residual units in the UNet model")
+parser.add_argument("--model_norm", type=str, default="InstanceNorm", help="Normalization type for the UNet model")
+args = parser.parse_args()
+
 
 data_dir = "data_dir/WORD"
-root_dir = "proj_dir/WORD_base"
+root_dir = f"proj_dir/UNet_lr_{args.learning_rate}_depth_{args.model_depth}_channels_{args.model_start_channels}_resunits_{args.model_num_res_units}_norm_{args.model_norm}"
+if not os.path.exists(root_dir):
+    os.makedirs(root_dir)
 
 # creat root directory if not exists
 if not os.path.exists(root_dir):
@@ -163,15 +174,16 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = UNet(
     spatial_dims=3,
     in_channels=1,
-    out_channels=numClasses,
-    channels=(16, 32, 64, 128, 256),
-    strides=(2, 2, 2, 2),
-    num_res_units=2,
+    out_channels=numClasses,  # Assuming numClasses is defined somewhere
+    channels=[args.model_start_channels * (2 ** i) for i in range(args.model_depth)],
+    strides=tuple([2] * (args.model_depth - 1)),
+    num_res_units=args.model_num_res_units,
+    norm=args.model_norm
 ).to(device)
 
 loss_function = DiceCELoss(to_onehot_y=True, softmax=True)
 torch.backends.cudnn.benchmark = True
-optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4, weight_decay=1e-5)
+optimizer = torch.optim.AdamW(model.parameters(), lr=args.learning_rate, weight_decay=1e-5)
 
 
 
@@ -334,16 +346,16 @@ wandb.init(
 
     # track hyperparameters and run metadata
     config={
-        "learning_rate": 1e-4,
+        "learning_rate": args.learning_rate,
         "architecture": "U-Net",
         "dataset": "WORD",
-        "epochs": 4000,
+        "epochs": 3000,
         "batch_size": 4,
         "loss": "DiceCELoss",
-        "model_depth": 5,
-        "model_start_channels": 16,
-        "model_num_res_units": 2,
-        "model_norm": "InstanceNorm",
+        "model_depth": args.model_depth,
+        "model_start_channels": args.model_start_channels,
+        "model_num_res_units": args.model_num_res_units,
+        "model_norm": args.model_norm,
         "model_act": "PReLU",
         "model_ordering": "NDA",
         "pixdim": (1.5, 1.5, 1.5),
@@ -356,8 +368,16 @@ wandb.init(
     }
 )
 
+# CLI controlles
+# "learning_rate",
+# "model_depth",
+# "model_start_channels",
+# "model_num_res_units",
+# "model_norm",
 
-max_iterations = 4000
+
+
+max_iterations = 2000
 eval_num = 50
 post_label = AsDiscrete(to_onehot=numClasses)
 post_pred = AsDiscrete(argmax=True, to_onehot=numClasses)
