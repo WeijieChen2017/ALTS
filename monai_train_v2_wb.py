@@ -61,7 +61,9 @@ args = parser.parse_args()
 
 
 data_dir = "data_dir/WORD"
-root_dir = f"proj_dir/UNet_lr_{args.learning_rate}_depth_{args.model_depth}_channels_{args.model_start_channels}_resunits_{args.model_num_res_units}_norm_{args.model_norm}"
+# root_dir = f"proj_dir/UNet_lr_{args.learning_rate}_depth_{args.model_depth}_channels_{args.model_start_channels}_resunits_{args.model_num_res_units}_norm_{args.model_norm}"
+root_dir = f"proj_dir/UNet_depth_{args.model_depth}_channels_{args.model_start_channels}_resunits_{args.model_num_res_units}"
+
 if not os.path.exists(root_dir):
     os.makedirs(root_dir)
 
@@ -377,7 +379,7 @@ wandb.init(
 
 
 
-max_iterations = 2000
+max_iterations = 3000
 eval_num = 50
 post_label = AsDiscrete(to_onehot=numClasses)
 post_pred = AsDiscrete(argmax=True, to_onehot=numClasses)
