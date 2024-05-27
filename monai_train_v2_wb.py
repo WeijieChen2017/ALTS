@@ -56,7 +56,7 @@ parser.add_argument("--learning_rate", type=float, default=1e-4, help="Learning 
 parser.add_argument("--model_depth", type=int, default=5, help="Depth of the UNet model")
 parser.add_argument("--model_start_channels", type=int, default=16, help="Initial number of channels in the UNet model")
 parser.add_argument("--model_num_res_units", type=int, default=2, help="Number of residual units in the UNet model")
-parser.add_argument("--model_norm", type=str, default="InstanceNorm", help="Normalization type for the UNet model")
+parser.add_argument("--model_norm", type=str, default="INSTANCE", help="Normalization type for the UNet model")
 args = parser.parse_args()
 
 
