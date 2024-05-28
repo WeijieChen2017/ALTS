@@ -59,6 +59,14 @@ parser.add_argument("--model_num_res_units", type=int, default=2, help="Number o
 parser.add_argument("--model_norm", type=str, default="INSTANCE", help="Normalization type for the UNet model")
 args = parser.parse_args()
 
+# print the parsed arguments
+print("Parsed arguments:")
+print("Learning rate:", args.learning_rate)
+print("Model depth:", args.model_depth)
+print("Model start channels:", args.model_start_channels)
+print("Model number of residual units:", args.model_num_res_units)
+print("Model normalization type:", args.model_norm)
+print("=====================================")
 
 data_dir = "data_dir/WORD"
 # root_dir = f"proj_dir/UNet_lr_{args.learning_rate}_depth_{args.model_depth}_channels_{args.model_start_channels}_resunits_{args.model_num_res_units}_norm_{args.model_norm}"
