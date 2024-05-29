@@ -14,7 +14,7 @@ transfer_input_files = ALTS.zip, WORD.zip, monai_train_v1.sh
 +WantGPULab = true
 +GPUJobLength = "medium"
 request_gpus = 1
-require_gpus = GlobalMemoryMb >= 15000
+require_gpus = GlobalMemoryMb >= 20000
 request_cpus = 16
 request_memory = 80GB
 request_disk = 50GB
