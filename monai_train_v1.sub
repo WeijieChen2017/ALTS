@@ -12,11 +12,11 @@ when_to_transfer_output = ON_EXIT_OR_EVICT
 transfer_input_files = ALTS.zip, WORD.zip, run.sh
 
 +WantGPULab = true
-+GPUJobLength = "short"
++GPUJobLength = "medium"
 request_gpus = 1
-require_gpus = GlobalMemoryMb >= 11000
+require_gpus = GlobalMemoryMb >= 15000
 request_cpus = 16
-request_memory = 40GB
-request_disk = 30GB
+request_memory = 80GB
+request_disk = 50GB
 
 queue

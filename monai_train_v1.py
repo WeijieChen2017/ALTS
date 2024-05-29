@@ -49,7 +49,7 @@ import matplotlib.pyplot as plt
 # print_config()
 
 data_dir = "data_dir/WORD"
-root_dir = "proj_dir/WORD_base"
+root_dir = "proj_dir/WORD_d5f48r5"
 
 # creat root directory if not exists
 if not os.path.exists(root_dir):
@@ -157,14 +157,29 @@ val_loader = DataLoader(val_ds, batch_size=1, shuffle=False, num_workers=4, pin_
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+model_depth = 5
+model_start_channels = 48
+model_num_res_units = 5
+
 model = UNet(
     spatial_dims=3,
     in_channels=1,
-    out_channels=numClasses,
-    channels=(32, 64, 128, 256),
-    strides=(2, 2, 2),
-    num_res_units=2,
+    out_channels=numClasses,  # Assuming numClasses is defined somewhere
+    channels=[model_start_channels * (2 ** i) for i in range(model_depth)],
+    strides=tuple([2] * (model_depth - 1)),
+    num_res_units=model_num_res_units,
+    norm="INSTANCE",
 ).to(device)
+
+
+# model = UNet(
+#     spatial_dims=3,
+#     in_channels=1,
+#     out_channels=numClasses,
+#     channels=(32, 64, 128, 256),
+#     strides=(2, 2, 2),
+#     num_res_units=5,
+# ).to(device)
 
 loss_function = DiceCELoss(to_onehot_y=True, softmax=True)
 torch.backends.cudnn.benchmark = True
@@ -304,7 +319,7 @@ def train(global_step, train_loader, dice_val_best, global_step_best):
 torch.manual_seed(729)
 np.random.seed(729)
 
-max_iterations = 6000
+max_iterations = 10000
 eval_num = 100
 post_label = AsDiscrete(to_onehot=numClasses)
 post_pred = AsDiscrete(argmax=True, to_onehot=numClasses)
@@ -324,12 +339,12 @@ hyper_params = {
     "learning_rate": 1e-4,
     "architecture": "U-Net",
     "dataset": "WORD",
-    "epochs": 6000,
+    "epochs": 10000,
     "batch_size": 4,
     "loss": "DiceCELoss",
-    "model_depth": 4,
-    "model_start_channels": 32,
-    "model_num_res_units": 2,
+    "model_depth": 5,
+    "model_start_channels": 48,
+    "model_num_res_units": 5,
     "model_norm": "InstanceNorm",
     "model_act": "PReLU",
     "model_ordering": "NDA",
