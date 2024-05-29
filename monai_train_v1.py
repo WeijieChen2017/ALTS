@@ -152,7 +152,7 @@ val_ds = CacheDataset(
     cache_rate=0.2, 
     num_workers=2)
 
-train_loader = DataLoader(train_ds, batch_size=4, shuffle=True, num_workers=8, pin_memory=True)
+train_loader = DataLoader(train_ds, batch_size=8, shuffle=True, num_workers=8, pin_memory=True)
 val_loader = DataLoader(val_ds, batch_size=1, shuffle=False, num_workers=4, pin_memory=True)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
