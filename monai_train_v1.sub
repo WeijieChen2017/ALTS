@@ -5,11 +5,11 @@ log = job_$(Cluster)_$(Process).log
 error = job_$(Cluster)_$(Process).err
 output = job_$(Cluster)_$(Process).out
 
-executable = run.sh
+executable = monai_train_v1.sh
 
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT_OR_EVICT
-transfer_input_files = ALTS.zip, WORD.zip, run.sh
+transfer_input_files = ALTS.zip, WORD.zip, monai_train_v1.sh
 
 +WantGPULab = true
 +GPUJobLength = "medium"
